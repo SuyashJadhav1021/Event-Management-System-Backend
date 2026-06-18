@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://event-management-system-frontend-hz.vercel.app",
+  "https://event-management-system-frontend-hzla-bh943c3n1.vercel.app",
 ];
 
 app.use(
