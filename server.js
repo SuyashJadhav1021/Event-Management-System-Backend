@@ -6,7 +6,16 @@ const errorHandler = require("./middleware/errorHandler");
 
 dotenv.config();
 
-connectDB();
+// connectDB();
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ message: "DB connection failed" });
+  }
+});
 
 const app = express();
 
