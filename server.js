@@ -4,22 +4,31 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 
-// Load env vars
 dotenv.config();
 
-// Connect to MongoDB
 connectDB();
 
 const app = express();
 
-// ── Middleware ────────────────────────────────────────────────────────────────
+// Middleware
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://event-management-system-frontend-hz.vercel.app",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://event-management-system-frontend-hz.vercel.app/",
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use(express.json());
