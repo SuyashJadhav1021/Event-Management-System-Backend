@@ -8,7 +8,6 @@ const errorHandler = require("./middleware/errorHandler");
 dotenv.config();
 
 // Connect to MongoDB
-console.log("MONGO_URI:", process.env.MONGO_URI);
 connectDB();
 
 const app = express();
@@ -42,10 +41,12 @@ app.use((req, res) => {
 
 // ── Central Error Handler (must be last) ─────────────────────────────────────
 app.use(errorHandler);
-
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(
-    `🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || "development"} mode`,
-  );
-});
+
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(` Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
